@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Drop</title>
+    <style>
+        body { 
+            font-family: Consolas, "Courier New", monospace; 
+            padding: 1.25em; 
+            background-color: #f9f9f9; 
+            max-width: 37.5em; 
+            margin: auto;
+        }
+        .navbar {
+            display: flex;
+            justify-content: space-around;
+            margin-bottom: 1.25em;
+        }
+        .navbar a {
+            text-decoration: none;
+            padding: 0.625em 0.9375em;
+            border-radius: 0.3125em;
+            background-color: #007bff;
+            color: white;
+            font-weight: bold;
+        }
+        ul { 
+            list-style: none; 
+            padding: 0; 
+        }
+        li { 
+            display: flex; 
+            align-items: center; 
+            gap: 0.625em; 
+            padding: 0.625em 0.9375em; 
+            margin: 0.3125em 0; 
+            border-radius: 0.5em; 
+            box-shadow: 0 0.0625em 0.1875em rgba(0,0,0,0.1);
+            background: white;
+        }
+        a { 
+            text-decoration: none; 
+            color: #007bff; 
+            flex-grow: 1; 
+        }
+        .file strong { 
+            font-weight: bold; 
+        }
+        .directory a { 
+            color: #0056b3; /* Blu scuro per le directory */
+        }
+        .size { 
+            color: #666; 
+            font-size: 0.9em; 
+        }
+        .back { 
+            font-weight: bold; 
+            color: #000; 
+            display: flex; 
+            align-items: center; 
+            gap: 0.625em; 
+        }
+        .icon { 
+            font-size: 1.125em;
+        }
+        .current-path {
+            font-size: 0.9em;
+            color: #666;
+            margin-bottom: 0.9375em;
+        }
+    </style>
+</head>
+<body>
+    <h2>Drop</h2>
+    <div class="current-path">{{.CurrentPath}}</div>
+
+    {{if .IsSubdirectory}}
+    <ul>
+        <li>
+            <span class="icon">🔙</span>
+            <a href="../" class="back">Back</a>
+        </li>
+    </ul>
+    {{end}}
+
+    <ul>
+        {{range $file := .Files}}
+        <li class="{{if $file.IsDir}}directory{{else}}file{{end}}">
+            <span class="icon">
+                {{if $file.IsDir}}📂{{else}}📄{{end}}
+            </span>
+            <a href="{{$file.Name}}">
+                {{if not $file.IsDir}}<strong>{{$file.Name}}</strong>{{else}}{{$file.Name}}{{end}}
+            </a> 
+            {{if not $file.IsDir}}
+            <span class="size">{{$file.Size}}</span>
+            {{end}}
+        </li>
+        {{end}}
+    </ul>
+</body>
+</html>
