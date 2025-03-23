@@ -22,6 +22,7 @@ Features
 ========
 
 - [x] 📂 Serves static files from a specified directory
+- [x] 📑 Automatically generates a stylish index if index.html is missing
 - [x] 📜 Consistent MIME type resolution across different environments
 - [x] 👀 Access Log
 - [x] 🔒 Basic Authentication for access
