@@ -45,4 +45,4 @@ experiments/**
 **/*.crt
 **/*.key
 **/*.users
-
+**/*.headers

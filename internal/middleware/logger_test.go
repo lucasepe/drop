@@ -23,7 +23,7 @@ func TestLoggerMiddleware(t *testing.T) {
 			log.Println("Done!")
 		})
 
-	route := NewChain(Logger()).Then(sillyHandler)
+	route := Chain(sillyHandler, Logger())
 
 	// Create a test request.
 	req := httptest.NewRequest("GET", "/test", nil)

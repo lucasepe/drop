@@ -28,7 +28,8 @@ ciccio: $5$nntldico$ptvLNSpQq7lzE2qPinKdtAE1T/pUVvvgndAn57Wv8q3
 		fmt.Fprint(w, "Hello!")
 	})
 
-	chain := NewChain(BasicAuth(users)).Then(sillyHandler)
+	chain := Chain(sillyHandler, BasicAuth(users))
+
 	server := httptest.NewServer(chain)
 	defer server.Close()
 

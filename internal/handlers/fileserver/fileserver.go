@@ -42,7 +42,7 @@ func New(dir string, options ...Option) http.Handler {
 		option(fs)
 	}
 
-	return middleware.NewChain(fs.middlewares...).Then(fs)
+	return middleware.Chain(fs, fs.middlewares...)
 }
 
 // ServeHTTP responds to an HTTP request.
