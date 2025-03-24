@@ -36,10 +36,6 @@ Features
 How To 
 ======
 
-Ecco la sezione **Installation** in inglese per il README del tuo progetto:  
-
----
-
 ## Installation
 
 You can install `drop` using different methods depending on your operating system.  
