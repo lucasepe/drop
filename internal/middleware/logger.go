@@ -15,7 +15,7 @@ func Logger() func(http.Handler) http.Handler {
 			next.ServeHTTP(rec, req)
 
 			elapsedTime := time.Since(startTime)
-			log.Printf("%d %s %s [%s]", rec.statusCode, req.Method, req.URL.Path, elapsedTime)
+			log.Printf("%s %s %s %d [%s]", req.RemoteAddr, req.Method, req.URL.Path, rec.statusCode, elapsedTime)
 		}
 
 		return http.HandlerFunc(fn)

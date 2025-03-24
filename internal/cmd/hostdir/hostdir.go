@@ -29,9 +29,14 @@ func Do(args []string, opts []getopt.OptArg) (err error) {
 	cert := tools.Str(opts, []string{"-c"}, "")
 	key := tools.Str(opts, []string{"-k"}, "")
 
-	middlewares := []func(http.Handler) http.Handler{
-		middleware.Logger(),
+	middlewares := []func(http.Handler) http.Handler{}
+
+	headers, err := loadConfig(filepath.Join(dir, ".headers"))
+	if err == nil && headers != nil {
+		middlewares = append(middlewares, middleware.Headers(headers))
 	}
+
+	middlewares = append(middlewares, middleware.Logger())
 
 	users, err := loadConfig(filepath.Join(dir, ".users"))
 	if err == nil && users != nil {
