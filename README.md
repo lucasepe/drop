@@ -21,16 +21,16 @@ This project is useful for various scenarios, including:
 Features
 ========
 
-- [x] 📂 Serves static files from a specified directory
-- [x] 📑 Automatically generates a stylish index if index.html is missing
-- [x] 📜 Consistent MIME type resolution across different environments
-- [x] 👀 Access Log
-- [x] 🔒 Basic Authentication for access
-- [ ] 🧩 Customizable HTTP response headers for specific file
-- [x] 🔐 HTTPS/TLS support for encrypted communication
-- [x] 👮‍♀️ Prevent Dot Files Access (e.g., .env, .gitignore)
-- [x] 👮‍♀️ Prevent Symlink Access
-- [x] 🚀 Graceful shutdown on termination signals
+- 📂 Serves static files from a specified directory
+- 📑 Automatically generates a stylish index if index.html is missing
+- 📜 Consistent MIME type resolution across different environments
+- 👀 Access Log
+- 🔒 Basic Authentication for access
+- 🧩 Customizable HTTP response headers for specific file
+- 🔐 HTTPS/TLS support for encrypted communication
+- 👮‍♀️ Prevent Dot Files Access (e.g., .env, .gitignore)
+- 👮‍♀️ Prevent Symlink Access
+- 🚀 Graceful shutdown on termination signals
 
 
 How To 
