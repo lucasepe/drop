@@ -36,6 +36,43 @@ Features
 How To 
 ======
 
+Ecco la sezione **Installation** in inglese per il README del tuo progetto:  
+
+---
+
+## Installation
+
+You can install `drop` using different methods depending on your operating system.  
+
+### macOS (Homebrew)
+
+The easiest way to install `drop` on macOS is via Homebrew:  
+
+```sh
+brew install lucasepe/cli-tools/drop
+```
+
+### Windows & Linux 
+
+#### Download Prebuilt Binaries
+
+- Go to the [Releases](https://github.com/lucasepe/drop/releases) section.  
+- Download the latest binary for your OS and Arch.  
+- Add it to your system's `$PATH` if necessary.  
+
+#### Alternative: Install via `go install` (requires Go installed)
+
+If you have Go installed, you can install `drop` directly with:  
+
+```sh
+go install github.com/lucasepe/drop@latest
+```  
+
+This will place the binary in `$GOPATH/bin` (or `$HOME/go/bin` if `$GOPATH` is not set).
+
+Ensure this path is in your `$PATH` to use `drop` globally.  
+
+
 Basic Authentication
 --------------------
 
