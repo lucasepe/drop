@@ -29,7 +29,9 @@ func Do(args []string, opts []getopt.OptArg) (err error) {
 	cert := tools.Str(opts, []string{"-c"}, "")
 	key := tools.Str(opts, []string{"-k"}, "")
 
-	middlewares := []func(http.Handler) http.Handler{}
+	middlewares := []func(http.Handler) http.Handler{
+		middleware.AllowedMethods(),
+	}
 
 	headers, err := loadConfig(filepath.Join(dir, ".headers"))
 	if err == nil && headers != nil {

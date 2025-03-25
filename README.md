@@ -30,8 +30,10 @@ Features
 - 🔐 HTTPS/TLS support for encrypted communication
 - 👮‍♀️ Prevent Dot Files Access (e.g., .env, .gitignore)
 - 👮‍♀️ Prevent Symlink Access
+- 📡 Support for OPTIONS requests, returning allowed HTTP methods
+- ⚡ Proper handling of HEAD requests (returns headers like Content-Type and Content-Length plus your custom headers)
+- ⛔ Blocks unsupported HTTP methods (POST, PUT, DELETE, etc.) with 405 Method Not Allowed
 - 🚀 Graceful shutdown on termination signals
-
 
 How To 
 ======

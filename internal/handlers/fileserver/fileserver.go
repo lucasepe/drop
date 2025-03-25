@@ -80,13 +80,25 @@ func (fs *FileServer) handleError(rw http.ResponseWriter, err error) {
 func (fs *FileServer) serveContent(rw http.ResponseWriter, req *http.Request, file http.File, fileInfo os.FileInfo) {
 	if !fileInfo.IsDir() {
 		mimeType := mime.TypeByExtension(filepath.Ext(fileInfo.Name()))
-		//log.Printf("serving file %q (mime-type: %s)\n", fileInfo.Name(), mimeType)
+
+		if req.Method == http.MethodHead {
+			rw.Header().Set("Content-Type", mimeType)
+			rw.Header().Set("Content-Length", fmt.Sprintf("%d", fileInfo.Size()))
+			rw.WriteHeader(http.StatusOK)
+			return
+		}
 
 		wrapped := &contentTypeWrapper{
 			ResponseWriter:      rw,
 			overrideContentType: mimeType,
 		}
+
 		http.ServeContent(wrapped, req, fileInfo.Name(), fileInfo.ModTime(), file)
+		return
+	}
+
+	if req.Method == http.MethodHead {
+		rw.WriteHeader(http.StatusNoContent)
 		return
 	}
 
