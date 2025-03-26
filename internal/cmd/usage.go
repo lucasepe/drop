@@ -3,7 +3,6 @@ package cmd
 import (
 	"fmt"
 	"io"
-	"os"
 	"strings"
 
 	xtext "github.com/lucasepe/x/text"
@@ -25,13 +24,7 @@ func usage(wri io.Writer) {
 			"Your support truly makes a difference — thank you!\n",
 			"  * https://www.paypal.com/donate/?hosted_button_id=FV575PVWGXZBY\n",
 		}
-
-		cwd, _ = os.Getwd()
 	)
-
-	if len(cwd) == 0 {
-		cwd = "."
-	}
 
 	fmt.Fprintln(wri)
 	fmt.Fprint(wri, "┌┬┐┬─┐┌─┐┌─┐\n")
