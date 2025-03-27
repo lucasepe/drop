@@ -1,9 +1,9 @@
 name: Go Test and Coverage
 
 on:
-  pull_request:
-    branches:
-      - main
+  push:
+    tags:
+      - 'v*'
 
 jobs:
   test:
