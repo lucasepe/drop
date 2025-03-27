@@ -4,18 +4,6 @@ import (
 	"fmt"
 )
 
-type templateData struct {
-	Files          []info
-	IsSubdirectory bool
-	CurrentPath    string
-}
-
-type info struct {
-	Name  string
-	Size  string
-	IsDir bool
-}
-
 func humanReadableSize(size int64) string {
 	const unit = 1024
 	if size < unit {

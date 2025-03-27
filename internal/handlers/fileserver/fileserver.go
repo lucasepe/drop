@@ -11,7 +11,6 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/lucasepe/drop/internal/middleware"
 	"github.com/lucasepe/drop/internal/mime"
 )
 
@@ -20,33 +19,20 @@ var (
 	defaultAutoIndexTemplate string
 )
 
-type FileServer struct {
-	autoIndexTmpl *template.Template
-	fileSystem    filteredFileSystem
-	middlewares   []func(http.Handler) http.Handler
-}
-
 // New returns a new handler instance that serves HTTP requests with the contents of the given directory.
-func New(dir string, options ...Option) http.Handler {
-
+func New(in http.FileSystem) http.Handler {
 	autoIndexTmpl := template.New("autoIndex").Funcs(template.FuncMap{
 		"humanReadableSize": humanReadableSize,
 	})
 
-	fs := &FileServer{
-		fileSystem:    filteredFileSystem{http.Dir(dir)},
+	return &fileServer{
+		fileSystem:    filteredFileSystem{in},
 		autoIndexTmpl: template.Must(autoIndexTmpl.Parse(defaultAutoIndexTemplate)),
 	}
-
-	for _, option := range options {
-		option(fs)
-	}
-
-	return middleware.Chain(fs, fs.middlewares...)
 }
 
 // ServeHTTP responds to an HTTP request.
-func (fs *FileServer) ServeHTTP(rw http.ResponseWriter, req *http.Request) {
+func (fs *fileServer) ServeHTTP(rw http.ResponseWriter, req *http.Request) {
 	p := path.Clean(req.URL.Path)
 
 	file, fileInfo, err := fs.fileSystem.OpenWithStat(p)
@@ -60,7 +46,24 @@ func (fs *FileServer) ServeHTTP(rw http.ResponseWriter, req *http.Request) {
 	fs.serveContent(rw, req, file, fileInfo)
 }
 
-func (fs *FileServer) handleError(rw http.ResponseWriter, err error) {
+type templateData struct {
+	Files          []info
+	IsSubdirectory bool
+	CurrentPath    string
+}
+
+type info struct {
+	Name  string
+	Size  string
+	IsDir bool
+}
+
+type fileServer struct {
+	autoIndexTmpl *template.Template
+	fileSystem    filteredFileSystem
+}
+
+func (fs *fileServer) handleError(rw http.ResponseWriter, err error) {
 	statusCode := http.StatusInternalServerError
 
 	if os.IsNotExist(err) || os.IsPermission(err) {
@@ -77,7 +80,7 @@ func (fs *FileServer) handleError(rw http.ResponseWriter, err error) {
 	}
 }
 
-func (fs *FileServer) serveContent(rw http.ResponseWriter, req *http.Request, file http.File, fileInfo os.FileInfo) {
+func (fs *fileServer) serveContent(rw http.ResponseWriter, req *http.Request, file http.File, fileInfo os.FileInfo) {
 	if !fileInfo.IsDir() {
 		mimeType := mime.TypeByExtension(filepath.Ext(fileInfo.Name()))
 
@@ -148,13 +151,4 @@ func (fs *FileServer) serveContent(rw http.ResponseWriter, req *http.Request, fi
 	}
 
 	_ = fs.autoIndexTmpl.Execute(rw, tmp)
-}
-
-func redirectTo(rw http.ResponseWriter, req *http.Request, path string) {
-	if query := req.URL.RawQuery; query != "" {
-		path += fmt.Sprint("?", query)
-	}
-
-	rw.Header().Add("Location", path)
-	rw.WriteHeader(http.StatusMovedPermanently)
 }

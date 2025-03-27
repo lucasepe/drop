@@ -16,6 +16,9 @@ X-Greetings: Hello World!
 
 [*.mod]
 X-Type: Go Module File
+
+[[]
+Wrong: Rule
 `
 	)
 

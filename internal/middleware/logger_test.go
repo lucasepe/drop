@@ -18,6 +18,7 @@ func TestLoggerMiddleware(t *testing.T) {
 		func(w http.ResponseWriter, r *http.Request) {
 			log.Println("Processing a lot...")
 			time.Sleep(1 * time.Second)
+			w.WriteHeader(http.StatusOK)
 			w.Write([]byte("Hello, World!"))
 
 			log.Println("Done!")
