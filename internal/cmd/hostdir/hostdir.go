@@ -6,7 +6,6 @@ import (
 	"net/http"
 	"os"
 	"os/signal"
-	"path/filepath"
 	"syscall"
 	"time"
 
@@ -33,14 +32,14 @@ func Do(args []string, opts []getopt.OptArg) (err error) {
 		middleware.AllowedMethods(),
 	}
 
-	headers, err := loadConfig(filepath.Join(dir, ".headers"))
+	headers, err := loadConfig(os.DirFS(dir), ".headers")
 	if err == nil && headers != nil {
 		middlewares = append(middlewares, middleware.Headers(headers))
 	}
 
 	middlewares = append(middlewares, middleware.Logger())
 
-	users, err := loadConfig(filepath.Join(dir, ".users"))
+	users, err := loadConfig(os.DirFS(dir), ".users")
 	if err == nil && users != nil {
 		middlewares = append(middlewares, middleware.BasicAuth(users))
 	}
@@ -50,7 +49,7 @@ func Do(args []string, opts []getopt.OptArg) (err error) {
 		ReadTimeout:  10 * time.Second,
 		WriteTimeout: 50 * time.Second,
 		IdleTimeout:  30 * time.Second,
-		Handler:      fileserver.New(dir, fileserver.WithMiddlewares(middlewares...)),
+		Handler:      middleware.Chain(fileserver.New(http.Dir(dir)), middlewares...),
 	}
 
 	ctx, stop := signal.NotifyContext(context.Background(), []os.Signal{

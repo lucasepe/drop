@@ -16,6 +16,12 @@ func TestBasicAuth(t *testing.T) {
 		sample = `
 # printf "ciccio:$(openssl passwd -5 -salt 'nntldico' '123456')\n"
 ciccio: $5$nntldico$ptvLNSpQq7lzE2qPinKdtAE1T/pUVvvgndAn57Wv8q3
+
+# SHA256 crypt error (invalid magic prefix $5) 👇
+invalid1: $nntldico$ptvLNSpQq7lzE2qPinKdtAE1T/pUVvvgndAn57Wv8q3
+
+# invalid hash for user 👇
+invalid2: im-not-a-sha256-crypt-digest!
 		`
 	)
 
@@ -46,6 +52,18 @@ ciccio: $5$nntldico$ptvLNSpQq7lzE2qPinKdtAE1T/pUVvvgndAn57Wv8q3
 			password:     "123456",
 			wantStatus:   http.StatusOK,
 			wantResponse: "Hello!",
+		},
+		{
+			name:       "SHA256 crypt error (invalid magic prefix)",
+			username:   "invalid1",
+			password:   "doesnotmatter",
+			wantStatus: http.StatusForbidden,
+		},
+		{
+			name:       "Invalid hash",
+			username:   "invalid2",
+			password:   "doesnotmatter",
+			wantStatus: http.StatusForbidden,
 		},
 		{
 			name:       "Wrong Password",

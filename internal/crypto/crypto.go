@@ -2,8 +2,6 @@ package crypto
 
 import (
 	"errors"
-
-	"github.com/lucasepe/drop/internal/crypto/core"
 )
 
 var ErrKeyMismatch = errors.New("hashed value is not the hash of the given password")
@@ -33,7 +31,4 @@ type Crypter interface {
 	//
 	// The algorithms based in MD5-crypt use a fixed value of rounds.
 	Cost(hashedKey string) (int, error)
-
-	// SetSalt sets a different salt. It is used to easily create derivated
-	SetSalt(salt core.Salt)
 }

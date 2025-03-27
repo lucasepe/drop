@@ -185,8 +185,6 @@ func (c *crypter) Cost(hashedKey string) (int, error) {
 	return int(cost), err
 }
 
-func (c *crypter) SetSalt(salt core.Salt) { c.Salt = salt }
-
 func GetSalt() core.Salt {
 	return core.Salt{
 		MagicPrefix:   []byte(MagicPrefix),
