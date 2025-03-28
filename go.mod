@@ -3,7 +3,7 @@ module github.com/lucasepe/drop
 go 1.24.1
 
 require (
-	github.com/lucasepe/x v0.6.0
+	github.com/lucasepe/x v0.7.1
 	github.com/stretchr/testify v1.10.0
 )
 

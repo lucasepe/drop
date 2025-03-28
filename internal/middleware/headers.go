@@ -1,12 +1,14 @@
 package middleware
 
 import (
+	"context"
 	"log"
 	"net/http"
 	"path/filepath"
 	"strings"
 
 	"github.com/lucasepe/x/config"
+	"github.com/lucasepe/x/text/template"
 )
 
 func Headers(rules config.Config) func(http.Handler) http.Handler {
@@ -31,13 +33,13 @@ func Headers(rules config.Config) func(http.Handler) http.Handler {
 
 			// Apply common rules
 			for key, value := range rules.All("") {
-				wri.Header().Set(key, value)
+				wri.Header().Set(key, applyTemplate(req.Context(), value))
 			}
 
 			// Apply specific rules
 			if cat != "" {
 				for key, value := range rules.All(cat) {
-					wri.Header().Set(key, value)
+					wri.Header().Set(key, applyTemplate(req.Context(), value))
 				}
 			}
 
@@ -46,4 +48,23 @@ func Headers(rules config.Config) func(http.Handler) http.Handler {
 
 		return http.HandlerFunc(fn)
 	}
+}
+
+func applyTemplate(ctx context.Context, value string) string {
+	data, ok := getExtraInfo(ctx)
+	if !ok {
+		log.Println("warning: no extra info found in context")
+		return value
+	}
+
+	res, err := template.Eval(value, template.EvalOptions{
+		StartTag: "${", EndTag: "}",
+		Data: data,
+	})
+	if err != nil {
+		log.Printf("error executing template: %v", err)
+		return value
+	}
+
+	return string(res)
 }

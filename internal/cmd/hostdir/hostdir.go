@@ -30,6 +30,7 @@ func Do(args []string, opts []getopt.OptArg) (err error) {
 
 	middlewares := []func(http.Handler) http.Handler{
 		middleware.AllowedMethods(),
+		middleware.Extra(),
 	}
 
 	headers, err := loadConfig(os.DirFS(dir), ".headers")

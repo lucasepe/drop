@@ -77,7 +77,7 @@ func (c *crypter) Generate(key, iv []byte) (string, error) {
 	// Start computation of P byte sequence.
 	P := sha256.New()
 	// For every character in the password add the entire password.
-	for i = range key {
+	for i = 0; i < len(key); i++ {
 		P.Write(key)
 	}
 	Psum := P.Sum(nil)
@@ -90,7 +90,7 @@ func (c *crypter) Generate(key, iv []byte) (string, error) {
 
 	// Start computation of S byte sequence.
 	S := sha256.New()
-	for i = range 16 + int(Asum[0]) {
+	for i = 0; i < (16 + int(Asum[0])); i++ {
 		S.Write(csalt.data)
 	}
 	Ssum := S.Sum(nil)
