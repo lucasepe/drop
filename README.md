@@ -127,13 +127,15 @@ Here’s a list of possible variables:
 
 | **Variable** | **Description** | **Example Value** | **Use Case**           |
 |--------------|-----------------|-------------------|------------------------|
-| `{{ SERVER_ADDR }}` | Server IP and port | `192.168.1.10:8080` | CSP, CORS  |
-| `{{ SERVER_NAME }}` | Server hostname | `example.com` | CSP, logging |
-| `{{ REMOTE_ADDR }}` | Client IP address | `203.0.113.45` | CORS, security         |
-| `{{ REQUEST_URI }}` | Full request URI (path + query string) | `/static/libs/hello.wasm?a=xxxx`| Debugging |
-| `{{ REQUEST_PATH }}` | Request path only | `/libs/hello.wasm` | CSP, CORS |
-| `{{ USER_AGENT }}`   | Client's User-Agent | `Mozilla/5.0 (Windows NT 10.0...)` | Security, analytics |
-| `{{ REFERER }}`      | Referrer URL of the request | `https://google.com/` | Security, analytics |
+| `SERVER_ADDR` | Server IP and port | `192.168.1.10:8080` | CSP, CORS  |
+| `SERVER_NAME` | Server hostname | `example.com` | CSP, logging |
+| `REMOTE_ADDR` | Client IP address | `203.0.113.45` | CORS, security         |
+| `REQUEST_URI` | Full request URI (path + query string) | `/static/libs/hello.wasm?a=xxxx`| Debugging |
+| `REQUEST_PATH` | Request path only | `/libs/hello.wasm` | CSP, CORS |
+| `USER_AGENT`   | Client's User-Agent | `Mozilla/5.0 (Windows NT 10.0...)` | Security, analytics |
+| `REFERER`      | Referrer URL of the request | `https://google.com/` | Security, analytics |
+
+When defining your custom headers, you can use these variables by enclosing them with the prefix `${` and the suffix `}`
 
 **Example**
 
