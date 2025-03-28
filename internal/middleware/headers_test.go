@@ -1,6 +1,9 @@
 package middleware
 
 import (
+	"context"
+	"io"
+	"log"
 	"net/http"
 	"net/http/httptest"
 	"strings"
@@ -73,6 +76,66 @@ Wrong: Rule
 				if got := rec.Header().Get(key); got != expectedValue {
 					t.Errorf("header %q: got %q, expected %q", key, got, expectedValue)
 				}
+			}
+		})
+	}
+}
+
+func TestApplyTemplate(t *testing.T) {
+	log.SetOutput(io.Discard)
+
+	mockCtx := context.WithValue(context.TODO(),
+		contextKeyExtra,
+		map[string]any{
+			serverAddrKey:  "localhost:8080",
+			remoteAddrKey:  "192.168.1.100",
+			requestPathKey: "/test",
+			userAgentKey:   "ciccio/v0.5.0",
+		})
+
+	tests := []struct {
+		name     string
+		ctx      context.Context
+		input    string
+		expected string
+	}{
+		{
+			name:     "Plain string, no template",
+			ctx:      mockCtx,
+			input:    "Hello, World!",
+			expected: "Hello, World!",
+		},
+		{
+			name:     "Simple template replacement",
+			ctx:      mockCtx,
+			input:    "Server: ${ SERVER_ADDR }",
+			expected: "Server: localhost:8080",
+		},
+		{
+			name:     "Multiple template variables",
+			ctx:      mockCtx,
+			input:    "Remote: ${ REMOTE_ADDR }, Path: ${REQUEST_PATH }",
+			expected: "Remote: 192.168.1.100, Path: /test",
+		},
+		{
+			name:     "Invalid template syntax",
+			ctx:      mockCtx,
+			input:    "Server: {{ SERVER_ADDR }}",
+			expected: "Server: {{ SERVER_ADDR }}",
+		},
+		{
+			name:     "Context missing data",
+			ctx:      context.TODO(),
+			input:    "Server: ${SERVER_ADDR}",
+			expected: "Server: ${SERVER_ADDR}",
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			output := applyTemplate(tt.ctx, tt.input)
+			if output != tt.expected {
+				t.Errorf("expected: %q, got: %q", tt.expected, output)
 			}
 		})
 	}

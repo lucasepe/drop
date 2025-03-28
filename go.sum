@@ -1,7 +1,7 @@
 github.com/davecgh/go-spew v1.1.1 h1:vj9j/u1bqnvCEfJOwUhtlOARqs3+rkHYY13jYWTU97c=
 github.com/davecgh/go-spew v1.1.1/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
-github.com/lucasepe/x v0.6.0 h1:vma2A0awDxhuXBcfIoUQkKW7xv5+EiktCMh1wyIuFQI=
-github.com/lucasepe/x v0.6.0/go.mod h1:mDVZwXEEQUNriHdGxPqZpY7PcHDAylrR+2mjTp/e3JM=
+github.com/lucasepe/x v0.7.1 h1:shhcqpb4ha0/kJS5hpsQC6JwdOA5XxceXrTQJ2PT2jc=
+github.com/lucasepe/x v0.7.1/go.mod h1:mDVZwXEEQUNriHdGxPqZpY7PcHDAylrR+2mjTp/e3JM=
 github.com/mattn/go-runewidth v0.0.16 h1:E5ScNMtiwvlvB5paMFdw9p4kSQzbXFikJ5SQO6TULQc=
 github.com/mattn/go-runewidth v0.0.16/go.mod h1:Jdepj2loyihRzMpdS35Xk/zdY8IAYHsh153qUoGf23w=
 github.com/pmezard/go-difflib v1.0.0 h1:4DBwDE0NGyQoBHbLQYPwSUPoCMWR5BEzIk/f1lZbAQM=
